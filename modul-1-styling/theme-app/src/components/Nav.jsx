@@ -1,8 +1,22 @@
-export const Nav = () => {
+import { darkTheme, lightTheme } from "../App";
+
+export const Nav = ({ setTheme }) => {
   return (
     <>
-      <button onClick={() => {}}>Light</button>
-      <button onClick={() => {}}>Dark</button>
+      <button
+        onClick={() => {
+          setTheme(lightTheme);
+        }}
+      >
+        Light
+      </button>
+      <button
+        onClick={() => {
+          setTheme(darkTheme);
+        }}
+      >
+        Dark
+      </button>
     </>
   );
 };

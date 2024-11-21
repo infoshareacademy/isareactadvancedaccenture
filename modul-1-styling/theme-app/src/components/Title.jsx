@@ -1,3 +1,9 @@
+import { useTheme } from "styled-components";
+
 export const Title = () => {
-  return <h1>{"INFOSHARE".split("").join("_")}</h1>;
+  const theme = useTheme();
+
+  return (
+    <h1 style={{ color: theme.color }}>{"INFOSHARE".split("").join("_")}</h1>
+  );
 };

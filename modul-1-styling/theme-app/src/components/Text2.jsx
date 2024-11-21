@@ -1,6 +1,8 @@
-const Text = () => {
+import { withTheme } from "styled-components";
+
+const Text = ({ theme }) => {
   return (
-    <p>
+    <p style={{ color: theme.color }}>
       Odkrywaj możliwości w świecie technologii i wzmacniaj kompetencje z
       najlepszymi trenerami-praktykami. Sprawdź szkolenia dla Ciebie i Twojego
       zespołu.
@@ -8,4 +10,4 @@ const Text = () => {
   );
 };
 
-export const Text2 = Text;
+export const Text2 = withTheme(Text);
