@@ -1,18 +1,20 @@
-import { darkTheme, lightTheme } from "../App";
+import { useTheme } from "styled-components";
 
-export const Nav = ({ setTheme }) => {
+export const Nav = () => {
+  const { setLightTheme, setDarkTheme } = useTheme();
+
   return (
     <>
       <button
         onClick={() => {
-          setTheme(lightTheme);
+          setLightTheme();
         }}
       >
         Light
       </button>
       <button
         onClick={() => {
-          setTheme(darkTheme);
+          setDarkTheme();
         }}
       >
         Dark
