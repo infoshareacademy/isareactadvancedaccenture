@@ -6,37 +6,41 @@ import iconCarrot from "../assets/icon-carrot.png";
 
 export const Services = () => (
   <section className="services">
-    <div className="container">
-      <h1 className="heading">Our Services</h1>
-      <div className="box">
-        <ul className="list">
-          <li className="list-item">
+    <div className="services-container">
+      <h1 className="services-heading">Our Services</h1>
+      <div className="services-box">
+        <ul className="services-list">
+          <li className="services-list-item">
             <a href="#" target="_self">
               Online Shopping{" "}
-              <img className="img" src={iconCart} alt="icon-cart" />
+              <img className="services-img" src={iconCart} alt="icon-cart" />
             </a>
           </li>
-          <li className="list-item">
+          <li className="services-list-item">
             <a href="#" target="_self">
               Quality Product{" "}
-              <img className="img" src={iconHand} alt="icon-hand" />
+              <img className="services-img" src={iconHand} alt="icon-hand" />
             </a>
           </li>
-          <li className="list-item">
+          <li className="services-list-item">
             <a href="#" target="_self">
               Domestic & International
               <br /> Delivery{" "}
               <img
-                className="img icon-world"
+                className="services-img icon-world"
                 src={iconWorld}
                 alt="icon-world"
               />
             </a>
           </li>
-          <li className="list-item">
+          <li className="services-list-item">
             <a href="#" target="_self">
               Well Organized{" "}
-              <img className="img" src={iconCarrot} alt="icon-carrot" />
+              <img
+                className="services-img"
+                src={iconCarrot}
+                alt="icon-carrot"
+              />
             </a>
           </li>
         </ul>
