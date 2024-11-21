@@ -5,7 +5,7 @@ export const Input = ({
   setData,
 }: {
   name: string;
-  setData: (args: { [key: string]: string }) => void;
+  setData: (data: { [key: string]: string }) => void;
 }) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setData({
