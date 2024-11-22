@@ -21,7 +21,7 @@ function App() {
     register,
     formState: { errors },
     reset,
-  } = useForm<FormData>();
+  } = useForm<FormData>({ criteriaMode: "all" });
 
   const onSubmit = (data: FormData) => {
     console.log(JSON.stringify(data, null, 2));
