@@ -4,8 +4,28 @@
 // Jeśli to string czy tablica, zwróć jego długość, a jeśli number, to zwróć jego wartość. 
 // W przypadku boolean zwróć 1 lub 0, a dla obiektu rzuć błędem.
 
-const processValue = (arg) => {
+const processValue = (arg: unknown): number => {
+    if (typeof arg === 'string') {
+        return arg.length
+    }
 
+    if (arg instanceof Array) {
+        return arg.length
+    }
+
+    if (typeof arg === 'number') {
+        return arg
+    }
+
+    if (typeof arg === 'boolean') {
+        return arg === true ? 1 : 0
+    }
+
+    if (typeof arg === 'object') {
+        throw Error('nie umiem policzyć')
+    }
+
+    return 0
 }
 
 
@@ -25,11 +45,11 @@ type Bike = {
     type: 'bike'
 }
 
-const logger = (errorOrString) => {
+const logger = (errorOrString: unknown): void => {
     console.error(errorOrString)
 }
 
-const generateVehicle = (vehicle) => {
+const generateVehicle = (vehicle: Car | Bike) => {
     switch (vehicle.type) {
         case 'car':
             return `${vehicle.brand} ${vehicle.model} ${vehicle.year}`
@@ -47,7 +67,8 @@ type Pokemon = {
     atack: number,
     defence: number,
     health: number,
-    scratch: () => '💅'
+    scratch: () => '💅',
+    vulnerability?: string
 }
 
 type FirePokemon = Pokemon & {
@@ -60,12 +81,21 @@ type WaterPokemon = Pokemon & {
     watergun: () => '💦'
 }
 
+const isFirePokemon = (pokemon: Pokemon): pokemon is FirePokemon => {
+    // return (pokemon as FirePokemon).vulnerability === 'water'
+    return pokemon.hasOwnProperty('fireball')
+}
+
+const isWaterPokemon = (pokemon: Pokemon): pokemon is WaterPokemon => {
+    return pokemon.vulnerability === 'grass'
+}
+
 const usePokemonSpecialPower = (pokemon: Pokemon) => {
-    if (pokemon.vulnerability === 'water') {
+    if (isFirePokemon(pokemon)) {
         pokemon.fireball()
     }
 
-    if (pokemon.vulnerability === 'water') {
+    if (isWaterPokemon(pokemon)) {
         pokemon.watergun()
     }
 
@@ -88,8 +118,8 @@ const tabs = [
 
 type fieldIds = 'field1' | 'field2' | 'field3' | 'field4' | 'field5'
 
-const getAllFields = (): Record<fieldIds, string> => {
-    const fields = {};
+const getAllFields = (): Record<fieldIds, { fieldName: string }> => {
+    const fields = {} as Record<fieldIds, { fieldName: string }>;
 
     tabs.forEach(tab => {
         tab.forEach(field => {
