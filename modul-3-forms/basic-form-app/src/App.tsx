@@ -16,7 +16,12 @@ type FormData = {
 };
 
 function App() {
-  const { handleSubmit, register } = useForm<FormData>();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
     console.log(JSON.stringify(data, null, 2));
@@ -29,9 +34,31 @@ function App() {
         style={formStyles as React.CSSProperties}
       >
         <label htmlFor="name">Name</label>
-        <input id="name" {...register("name")} />
+        <input
+          id="name"
+          {...register("name", { required: true, pattern: /^[A-Za-z]+$/ })}
+        />
+        {errors.name && errors.name.type === "required" && (
+          <span style={{ color: "red" }}>This field is required</span>
+        )}
+        {errors.name && errors.name.type === "pattern" && (
+          <span style={{ color: "red" }}>
+            This field can contain only letters
+          </span>
+        )}
         <label htmlFor="surname">Surname</label>
-        <input id="surname" {...register("surname")} />
+        <input
+          id="surname"
+          {...register("surname", { required: true, pattern: /^[A-Za-z]+$/ })}
+        />
+        {errors.surname && errors.surname.type === "required" && (
+          <span style={{ color: "red" }}>This field is required</span>
+        )}
+        {errors.surname && errors.surname.type === "pattern" && (
+          <span style={{ color: "red" }}>
+            This field can contain only letters
+          </span>
+        )}
         <label htmlFor="age">Age</label>
         <input id="age" {...register("age")} />
         <label htmlFor="gender">Gender</label>
@@ -40,9 +67,14 @@ function App() {
           <option>female</option>
         </select>
         <label htmlFor="comment">Comment</label>
-        <textarea id="comment" {...register("comment")} />
+        <textarea id="comment" {...register("comment", { maxLength: 50 })} />
+        {errors.comment && errors.comment.type === "maxLength" && (
+          <span style={{ color: "red" }}>
+            This field can contain only 50 characters
+          </span>
+        )}
         <button type="submit">Wyślij</button>
-        <button>Reset</button>
+        <button onClick={() => reset()}>Reset</button>
       </form>
     </>
   );
