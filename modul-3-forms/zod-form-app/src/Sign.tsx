@@ -7,11 +7,38 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-const schema = z.object({});
+const schema = z
+  .object({
+    name: z.string(),
+    surname: z.string(),
+    number: z.string(),
+    work: z.enum(["employed", "unemployed"]),
+    company: z.string().optional(),
+    role: z.string().optional(),
+  })
+  .superRefine((val, ctx) => {
+    if (val.work === "employed") {
+      if (val.company === "") {
+        ctx.addIssue({
+          code: "custom",
+          message: "Company i role jest wymagane",
+          path: ["company"],
+        });
+      }
+
+      if (val.role === "") {
+        ctx.addIssue({
+          code: "custom",
+          message: "Company i role jest wymagane",
+          path: ["role"],
+        });
+      }
+    }
+  });
 
 type FormData = {
   name: string;
@@ -26,10 +53,13 @@ export const Sign = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
+
+  const workFieldValue = useWatch({ control, name: "work" });
 
   const onSubmit = (data: FormData) => {
     console.log(JSON.stringify(data, null, 2));
@@ -68,21 +98,20 @@ export const Sign = () => {
       <TextField margin="normal" type="number" {...getFieldProps("number")} />
 
       <FormLabel>Work</FormLabel>
-      <Select {...getFieldProps("work")}>
+      <Select {...register("work")}>
         <MenuItem value="employed">employed</MenuItem>
         <MenuItem value="unemployed">unemployed</MenuItem>
       </Select>
 
-      {/* pokazuj tylko dla wyboru "employed" */}
-      {/* {(
+      {workFieldValue === "employed" && (
         <>
           <FormLabel>Company</FormLabel>
-          <TextField margin="normal" />
+          <TextField margin="normal" {...getFieldProps("company")} />
 
           <FormLabel>Role</FormLabel>
-          <TextField margin="normal" />
+          <TextField margin="normal" {...getFieldProps("role")} />
         </>
-      )} */}
+      )}
 
       <Button type="submit">Send</Button>
     </Box>
