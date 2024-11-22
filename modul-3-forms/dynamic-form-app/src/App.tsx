@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, useFieldArray } from "react-hook-form";
 import {
   TextField,
   FormLabel,
@@ -14,15 +14,22 @@ type FormData = {
   surname: string;
   age: number;
   year: number;
+  hobbys: { value: string }[];
 };
 
 function App() {
   const [newHobby, setNewHobby] = useState("");
   const { register, handleSubmit, control, setValue } = useForm<FormData>();
   const ageFieldValue = useWatch({ control, name: "age" });
+  const { fields, append, remove } = useFieldArray({ control, name: "hobbys" });
 
   const onSubmit = (data: FormData) => {
     console.log(JSON.stringify(data, null, 2));
+  };
+
+  const onAddHobby = () => {
+    append({ value: newHobby });
+    setNewHobby(""); // reset formularza do hobby
   };
 
   useEffect(() => {
@@ -63,12 +70,23 @@ function App() {
       />
       <FormLabel>Hobbys</FormLabel>
       <Grid container marginTop={2}>
-        <Grid item alignItems="stretch" style={{ display: "flex" }}>
-          <TextField />
-          <Button variant="contained" color="error">
-            X
-          </Button>
-        </Grid>
+        {fields.map((field, index) => (
+          <Grid
+            item
+            alignItems="stretch"
+            style={{ display: "flex" }}
+            key={field.id}
+          >
+            <TextField {...register(`hobbys.${index}.value`)} />
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => remove(index)}
+            >
+              X
+            </Button>
+          </Grid>
+        ))}
       </Grid>
 
       <Grid container marginTop={2}>
@@ -79,7 +97,7 @@ function App() {
           />
         </Grid>
         <Grid item alignItems="stretch" style={{ display: "flex" }}>
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained" onClick={onAddHobby}>
             Add
           </Button>
         </Grid>
