@@ -36,7 +36,10 @@ function App() {
         <label htmlFor="name">Name</label>
         <input
           id="name"
-          {...register("name", { required: true, pattern: /^[A-Za-z]+$/ })}
+          {...register("name", {
+            required: true,
+            pattern: /^[A-Za-z]+$/,
+          })}
         />
         {errors.name && errors.name.type === "required" && (
           <span style={{ color: "red" }}>This field is required</span>
@@ -49,15 +52,16 @@ function App() {
         <label htmlFor="surname">Surname</label>
         <input
           id="surname"
-          {...register("surname", { required: true, pattern: /^[A-Za-z]+$/ })}
+          {...register("surname", {
+            required: "This field is required",
+            pattern: {
+              value: /^[A-Za-z]+$/,
+              message: "This field can contain only letters",
+            },
+          })}
         />
-        {errors.surname && errors.surname.type === "required" && (
-          <span style={{ color: "red" }}>This field is required</span>
-        )}
-        {errors.surname && errors.surname.type === "pattern" && (
-          <span style={{ color: "red" }}>
-            This field can contain only letters
-          </span>
+        {errors.surname && (
+          <span style={{ color: "red" }}>{errors.surname.message}</span>
         )}
         <label htmlFor="age">Age</label>
         <input id="age" {...register("age")} />
