@@ -14,7 +14,7 @@ export const Confirm = () => {
       autoComplete="off"
     >
       <Typography variant="h4" marginBottom={5}>
-        Log in yup
+        Log in
       </Typography>
 
       <FormLabel>Password</FormLabel>

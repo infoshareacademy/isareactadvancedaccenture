@@ -22,7 +22,7 @@ export const Sign = () => {
       autoComplete="off"
     >
       <Typography variant="h4" marginBottom={5}>
-        Sign to conference yup
+        Sign to conference
       </Typography>
 
       <FormLabel>Name</FormLabel>
