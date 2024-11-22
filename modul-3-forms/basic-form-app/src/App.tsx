@@ -1,3 +1,5 @@
+import { useForm } from "react-hook-form";
+
 const formStyles = {
   display: "flex",
   flexDirection: "column",
@@ -5,23 +7,40 @@ const formStyles = {
   margin: "auto",
 };
 
+type FormData = {
+  name: string;
+  surname: string;
+  age: string;
+  gender: "male" | "female";
+  comment: string;
+};
+
 function App() {
+  const { handleSubmit, register } = useForm<FormData>();
+
+  const onSubmit = (data: FormData) => {
+    console.log(JSON.stringify(data, null, 2));
+  };
+
   return (
     <>
-      <form style={formStyles as React.CSSProperties}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={formStyles as React.CSSProperties}
+      >
         <label htmlFor="name">Name</label>
-        <input id="name" />
+        <input id="name" {...register("name")} />
         <label htmlFor="surname">Surname</label>
-        <input id="surname" />
+        <input id="surname" {...register("surname")} />
         <label htmlFor="age">Age</label>
-        <input id="age" />
+        <input id="age" {...register("age")} />
         <label htmlFor="gender">Gender</label>
-        <select id="gender">
+        <select id="gender" {...register("gender")}>
           <option>male</option>
           <option>female</option>
         </select>
         <label htmlFor="comment">Comment</label>
-        <textarea id="comment" />
+        <textarea id="comment" {...register("comment")} />
         <button type="submit">Wyślij</button>
         <button>Reset</button>
       </form>
