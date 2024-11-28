@@ -3,12 +3,14 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { PageWrapper } from "../../../common/page-wrapper";
-import { BurgerData } from "../../../common/types";
+import { useQuery } from "@tanstack/react-query";
+import { getBurger } from "../../../services/burgers";
 
 const DetailsView = ({ id }: { id: string }) => {
-  const error: Error | null = null;
-  const isLoading = false;
-  const data: BurgerData | null = null;
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["burgers", id],
+    queryFn: () => getBurger(id),
+  });
 
   if (error) {
     return <PageWrapper title="An error occurred">{error.message}</PageWrapper>;

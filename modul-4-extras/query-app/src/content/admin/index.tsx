@@ -10,12 +10,26 @@ import { PageWrapper } from "../../common/page-wrapper";
 import { AddModalButton } from "./add-modal-button";
 import { Row } from "./row";
 import { Burger } from "../../common/types";
+import { useQuery } from "@tanstack/react-query";
+import { getBurgers } from "../../services/burgers";
+import { CircularProgress } from "@mui/material";
 
 export const Admin = () => {
-  const error: Error | null = null;
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["burgers"],
+    queryFn: getBurgers,
+  });
 
   if (error) {
     return <PageWrapper title="An error occurred">{error.message}</PageWrapper>;
+  }
+
+  if (isLoading) {
+    return (
+      <PageWrapper>
+        <CircularProgress />
+      </PageWrapper>
+    );
   }
 
   return (
@@ -32,7 +46,7 @@ export const Admin = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {[].map((burger: Burger) => (
+            {data?.map((burger: Burger) => (
               <Row key={burger.id} burger={burger} />
             ))}
           </TableBody>
