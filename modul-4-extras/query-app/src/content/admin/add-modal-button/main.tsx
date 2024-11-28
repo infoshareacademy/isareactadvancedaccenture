@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
-import { BurgerData } from "../../../common/types";
+import { BurgerData, Burger } from "../../../common/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addBurger } from "../../../services/burgers";
 
@@ -25,7 +25,21 @@ export const AddModal = ({ handleClose, isOpen }: Props) => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: addBurger,
-    onSuccess: () => {
+    onMutate: async (newBurger) => {
+      // Zapisz aktualny stan cache
+      const previousData = queryClient.getQueryData(["burgers"]);
+      // Optymistycznie zaktualizuj cache
+      queryClient.setQueryData(["burgers"], (old: Burger[]) => [
+        ...old,
+        newBurger,
+      ]);
+      // Zwróć funkcję rollback w przypadku błędu
+      return { previousData };
+    },
+    onError: (_, __, context) => {
+      queryClient.setQueryData(["burgers"], context?.previousData);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["burgers"] });
       handleClose();
     },
