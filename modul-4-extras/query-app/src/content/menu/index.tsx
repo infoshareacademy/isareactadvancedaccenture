@@ -16,6 +16,7 @@ export const Menu = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: ["burgers"],
     queryFn: getBurgers,
+    staleTime: 5000,
   });
 
   if (error) {

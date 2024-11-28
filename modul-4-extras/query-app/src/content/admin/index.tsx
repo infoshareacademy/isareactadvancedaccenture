@@ -10,9 +10,9 @@ import { PageWrapper } from "../../common/page-wrapper";
 import { AddModalButton } from "./add-modal-button";
 import { Row } from "./row";
 import { Burger } from "../../common/types";
+import { CircularProgress } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { getBurgers } from "../../services/burgers";
-import { CircularProgress } from "@mui/material";
 
 export const Admin = () => {
   const { data, error, isLoading } = useQuery({
