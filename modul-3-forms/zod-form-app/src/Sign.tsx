@@ -40,14 +40,7 @@ const schema = z
     }
   });
 
-type FormData = {
-  name: string;
-  surname: string;
-  number: string;
-  work: "employed" | "unemployed";
-  company?: string;
-  role?: string;
-};
+type FormData = z.infer<typeof schema>;
 
 export const Sign = () => {
   const {

@@ -3,11 +3,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-type FormData = {
-  password: string;
-  confirmPassword: string;
-};
-
 const schema = z
   .object({
     password: z.string().min(1),
@@ -22,6 +17,8 @@ const schema = z
       });
     }
   });
+
+type FormData = z.infer<typeof schema>;
 
 export const Confirm = () => {
   const {

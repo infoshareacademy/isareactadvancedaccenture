@@ -18,13 +18,7 @@ const schema = z.object({
   comment: z.string().max(50, "Komentarz jest za długi"),
 });
 
-type FormData = {
-  name: string;
-  surname: string;
-  age: number;
-  gender: "male" | "female" | "unknown";
-  comment: string;
-};
+type FormData = z.infer<typeof schema>;
 
 export const Basic = () => {
   const {
