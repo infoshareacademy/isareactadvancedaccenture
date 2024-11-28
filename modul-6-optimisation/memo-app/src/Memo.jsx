@@ -1,24 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
-const Discount = ({ order: { clientType, isTotalMoreThan100 } }) => {
+const Discount = ({ order }) => {
   const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
     console.log("Discount rerenders");
-    if (clientType === "external") {
-      if (isTotalMoreThan100) {
+    if (order.clientType === "external") {
+      if (order.isTotalMoreThan100) {
         setDiscount(10);
       } else {
         setDiscount(0);
       }
     } else {
-      if (isTotalMoreThan100) {
+      if (order.isTotalMoreThan100) {
         setDiscount(20);
       } else {
         setDiscount(10);
       }
     }
-  }, [clientType, isTotalMoreThan100]);
+  }, [order]);
 
   return <h3>Discount: {discount}%</h3>;
 };
@@ -26,6 +26,16 @@ const Discount = ({ order: { clientType, isTotalMoreThan100 } }) => {
 export const Memo = () => {
   const [clientType, setClientType] = useState("external");
   const [totalValue, setTotalValue] = useState(100);
+
+  const isTotalMoreThan100 = totalValue > 100;
+
+  const memoizedOrder = useMemo(
+    () => ({
+      clientType,
+      isTotalMoreThan100,
+    }),
+    [clientType, isTotalMoreThan100]
+  );
 
   return (
     <>
@@ -67,12 +77,7 @@ export const Memo = () => {
           />
         </div>
       </form>
-      <Discount
-        order={{
-          clientType,
-          isTotalMoreThan100: totalValue > 100,
-        }}
-      />
+      <Discount order={memoizedOrder} />
     </>
   );
 };
