@@ -33,12 +33,17 @@ function Toggle() {
   );
 }
 
-function App() {
+function Button() {
   const [value, setValue] = useState(0);
+
+  return <button onClick={() => setValue(value + 1)}>{value}</button>;
+}
+
+function App() {
   return (
     <div className="App">
       <h1>React Profiler Example</h1>
-      <button onClick={() => setValue(value + 1)}>{value}</button>
+      <Button />
       <Toggle />
       <SlowComponent />
       <FastComponent />
