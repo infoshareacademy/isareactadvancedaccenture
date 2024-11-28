@@ -10,3 +10,5 @@ export const Home = () => {
     </PageWrapper>
   );
 };
+
+export default Home;

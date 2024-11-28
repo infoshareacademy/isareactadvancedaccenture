@@ -1,14 +1,20 @@
 import { Route, Routes } from "react-router-dom";
-import { Home } from "./home";
-import { Admin } from "./admin";
 import { Menu } from "./menu";
 import { Details } from "./details";
+import { lazy, Suspense } from "react";
+
+const LazyHome = lazy(() => import("./home"));
+const LazyAdmin = lazy(() =>
+  import("./admin").then((module) => ({ default: module.Admin }))
+);
 
 export const Content = () => (
-  <Routes>
-    <Route path="/" element={<Home />} />
-    <Route path="/menu" element={<Menu />} />
-    <Route path="/menu/:id" element={<Details />} />
-    <Route path="/admin" element={<Admin />} />
-  </Routes>
+  <Suspense fallback={<h1>Loading</h1>}>
+    <Routes>
+      <Route path="/" element={<LazyHome />} />
+      <Route path="/menu" element={<Menu />} />
+      <Route path="/menu/:id" element={<Details />} />
+      <Route path="/admin" element={<LazyAdmin />} />
+    </Routes>
+  </Suspense>
 );
