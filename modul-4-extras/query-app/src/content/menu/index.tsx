@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,13 +7,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import CircularProgress from "@mui/material/CircularProgress";
 import { PageWrapper } from "../../common/page-wrapper";
 import { Burger } from "../../common/types";
 import { getBurgers } from "../../services/burgers";
 
 export const Menu = () => {
-  const { data, error, isLoading } = useQuery({
+  const { data, error } = useSuspenseQuery({
     queryKey: ["burgers"],
     queryFn: getBurgers,
     staleTime: 5000,
@@ -21,14 +20,6 @@ export const Menu = () => {
 
   if (error) {
     return <PageWrapper title="An error occurred">{error.message}</PageWrapper>;
-  }
-
-  if (isLoading) {
-    return (
-      <PageWrapper>
-        <CircularProgress />
-      </PageWrapper>
-    );
   }
 
   return (

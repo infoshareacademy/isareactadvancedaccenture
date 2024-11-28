@@ -10,26 +10,17 @@ import { PageWrapper } from "../../common/page-wrapper";
 import { AddModalButton } from "./add-modal-button";
 import { Row } from "./row";
 import { Burger } from "../../common/types";
-import { CircularProgress } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getBurgers } from "../../services/burgers";
 
 export const Admin = () => {
-  const { data, error, isLoading } = useQuery({
+  const { data, error } = useSuspenseQuery({
     queryKey: ["burgers"],
     queryFn: getBurgers,
   });
 
   if (error) {
     return <PageWrapper title="An error occurred">{error.message}</PageWrapper>;
-  }
-
-  if (isLoading) {
-    return (
-      <PageWrapper>
-        <CircularProgress />
-      </PageWrapper>
-    );
   }
 
   return (
