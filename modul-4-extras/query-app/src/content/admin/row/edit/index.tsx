@@ -3,8 +3,10 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import Icon from "@mui/material/Icon";
 import TextField from "@mui/material/TextField";
-import { Burger } from "../../../../common/types";
+import { Burger, BurgerData } from "../../../../common/types";
 import { useForm } from "react-hook-form";
+import { editBurger } from "../../../../services/burgers";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   burger: Burger;
@@ -26,8 +28,18 @@ export const EditRow = ({ burger, cancelEditMode }: Props) => {
     },
   });
 
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: (data: BurgerData) => editBurger(burger.id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["burgers"] });
+      cancelEditMode();
+    },
+  });
+
   const handleSaveClick = () => {
     const values = getValues();
+    mutate(values);
   };
 
   return (

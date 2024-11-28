@@ -3,6 +3,8 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import Icon from "@mui/material/Icon";
 import { Burger } from "../../../../common/types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteBurger } from "../../../../services/burgers";
 
 type Props = {
   burger: Burger;
@@ -10,7 +12,16 @@ type Props = {
 };
 
 export const ViewRow = ({ burger, enterEditMode }: Props) => {
-  const handleDeleteClick = () => {};
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: deleteBurger,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["burgers"] });
+    },
+  });
+  const handleDeleteClick = () => {
+    mutate(burger.id);
+  };
 
   return (
     <TableRow>
