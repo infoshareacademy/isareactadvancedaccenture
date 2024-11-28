@@ -23,11 +23,13 @@ const Timer = () => {
 };
 
 const App = () => {
+  const [val, setVal] = useState(0);
+
   return (
     <div>
-      <button>Zresetuj timer</button>
+      <button onClick={() => setVal(val + 1)}>Zresetuj timer</button>
       <div style={{ marginTop: "20px" }}>
-        <Timer />
+        <Timer key={val} />
       </div>
     </div>
   );
