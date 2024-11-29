@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const Points = ({ calculateRisk, days }) => {
   const [multiplier, setMultiplier] = useState(1);
@@ -27,7 +27,7 @@ export const Callback = () => {
   const [impact, setImpact] = useState("low");
   const [days, setDays] = useState(1);
 
-  const calculateRisk = () => {
+  const calculateRisk = useCallback(() => {
     if (likelihood === "high" && impact === "high") {
       return "high";
     } else if (likelihood === "low" || impact === "low") {
@@ -35,7 +35,7 @@ export const Callback = () => {
     } else if (likelihood === "mid" || impact === "mid") {
       return "mid";
     }
-  };
+  }, [likelihood, impact]);
 
   return (
     <>
