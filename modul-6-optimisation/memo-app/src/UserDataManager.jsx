@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo, useMemo } from "react";
 
-const User = ({ user }) => {
+const User = memo(({ user }) => {
   useEffect(() => {
     console.log(`User ${user.name} rerenders`);
   });
@@ -10,7 +10,7 @@ const User = ({ user }) => {
       {user.name} - {user.email} - {user.age} lat
     </span>
   );
-};
+});
 
 const UserList = ({ users, handleEditUser }) => {
   return (
@@ -89,7 +89,7 @@ const UserForm = ({ handleAddUser, handleUpdateUser, editUser }) => {
   );
 };
 
-const Stats = ({ userStats }) => {
+const Stats = memo(({ userStats }) => {
   useEffect(() => {
     console.log("Stats rerenders");
   });
@@ -105,7 +105,7 @@ const Stats = ({ userStats }) => {
       <p>Średni wiek: {userStats.averageAge}</p>
     </>
   );
-};
+});
 
 const UserDataManager = () => {
   const [users, setUsers] = useState([
@@ -130,9 +130,13 @@ const UserDataManager = () => {
     setEditingUserId(null);
   };
 
-  const editUser = users.find((u) => u.id === editingUserId);
+  // to na wypadek jakby cos wplywalo na render UserManagerData z góry
+  const editUser = useMemo(
+    () => users.find((u) => u.id === editingUserId),
+    [users, editingUserId]
+  );
 
-  const getUserStats = () => {
+  const userStats = useMemo(() => {
     const totalUsers = users.length;
     const averageAge =
       totalUsers > 0
@@ -142,7 +146,7 @@ const UserDataManager = () => {
       totalUsers,
       averageAge: averageAge.toFixed(2),
     };
-  };
+  }, [users]);
 
   return (
     <div>
@@ -152,7 +156,7 @@ const UserDataManager = () => {
         handleUpdateUser={handleUpdateUser}
         editUser={editUser}
       />
-      <Stats userStats={getUserStats()} />
+      <Stats userStats={userStats} />
       <h3>Lista Użytkowników:</h3>
       <UserList users={users} handleEditUser={handleEditUser} />
     </div>
