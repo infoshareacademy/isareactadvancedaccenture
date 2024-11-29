@@ -27,16 +27,6 @@ export const Memo = () => {
   const [clientType, setClientType] = useState("external");
   const [totalValue, setTotalValue] = useState(100);
 
-  const isTotalMoreThan100 = totalValue > 100;
-
-  const memoizedOrder = useMemo(
-    () => ({
-      clientType,
-      isTotalMoreThan100,
-    }),
-    [clientType, isTotalMoreThan100]
-  );
-
   return (
     <>
       <h1>Memo - shopping cart</h1>
@@ -77,7 +67,12 @@ export const Memo = () => {
           />
         </div>
       </form>
-      <Discount order={memoizedOrder} />
+      <Discount
+        order={{
+          clientType,
+          isTotalMoreThan100: totalValue > 100,
+        }}
+      />
     </>
   );
 };
