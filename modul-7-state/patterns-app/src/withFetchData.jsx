@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 export const withFetchData = (Component) => {
+  // eslint-disable-next-line react/display-name
   return ({ url }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);

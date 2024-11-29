@@ -1,8 +1,20 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
-import { rentalOffice } from './state/rental-office-toolkit';
+import { rentalOffice, add } from './state/rental-office-toolkit';
 import { shopCart } from './state/shop-cart';
 
+const middlewar = store => next => action => {
+    if (action.type === 'BUY') {
+        console.log('Dispatching:', action);
+        console.log('Current state:', store.getState())
+        store.getState().shopCart.forEach((product) => {
+            store.dispatch(add(product.name))
+        })
+    }
+
+    let result = next(action);
+    return result;
+};
 
 const reducers = combineReducers({
     rentalOffice,
@@ -10,7 +22,8 @@ const reducers = combineReducers({
 });
 
 export const store = configureStore({
-    reducer: reducers
+    reducer: reducers,
+    middleware: (getDefaultMiddlewares) => getDefaultMiddlewares().concat(middlewar)
 });
 
 export type State = ReturnType<typeof store.getState>
