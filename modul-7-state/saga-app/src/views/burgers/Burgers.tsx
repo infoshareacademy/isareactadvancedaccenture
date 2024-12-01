@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import { State } from "../../store";
-import { fetch, add, remove } from "../../state/burgers";
+import { fetch, postBurger, removeBurger } from "../../state/burgers";
 
 export const Burgers = () => {
   const elements = useSelector((state: State) => state.burgers.data);
@@ -26,7 +26,7 @@ export const Burgers = () => {
 
     if (name !== null && ingredients !== null && price !== null) {
       dispatch(
-        add({
+        postBurger({
           name: name as string,
           ingredients: ingredients as string,
           price: price as string,
@@ -36,7 +36,7 @@ export const Burgers = () => {
   };
 
   const handleRemoveClick = (elementId: string) => {
-    dispatch(remove(elementId));
+    dispatch(removeBurger(elementId));
   };
 
   return (

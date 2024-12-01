@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getBurgers, addBurger, deleteBurger } from "../services/burgers";
+import type { PayloadAction } from '@reduxjs/toolkit'
 
 export type BurgerData = {
     name: string,
@@ -25,12 +26,20 @@ const burgersSlice = createSlice({
         setLoading: (state, action) => {
             state.loading = action.payload
         },
+        postBurger: (state, action: PayloadAction<BurgerData>) => {
+            state.loading = true
+        },
+        removeBurger: (state, action: PayloadAction<string>) => {
+            state.loading = true
+        },
     },
 });
 
 export const burgers = burgersSlice.reducer;
-export const { setData, setLoading } = burgersSlice.actions;
+export const { setData, setLoading, postBurger, removeBurger } = burgersSlice.actions;
 
+
+// REDUX THUNK
 export const fetch = () => async (dispatch) => {
     dispatch(setLoading(true))
     const response = await getBurgers();
